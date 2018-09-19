@@ -79,8 +79,16 @@ class WP_Subtitle {
 	 */
 	public function get_raw_subtitle() {
 
-		return get_post_meta( $this->post_id, $this->get_post_meta_key(), true );
+		if ( is_preview() ) {
 
+			if ( isset( $_GET['preview_id'] ) ) {
+				$p =  wp_get_post_autosave( $this->post_id );
+				return get_post_meta( $p->ID, $this->get_post_meta_key(), true );
+			}
+
+		}
+
+		return get_post_meta( $this->post_id, $this->get_post_meta_key(), true );
 	}
 
 	/**
